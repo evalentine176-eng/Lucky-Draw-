@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#7c2cff">
+  <meta name="description" content="Lucky Draw — a MiniPay-ready prototype with a fixed 0.083 cUSD entry fee.">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Lucky Draw</title>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">★</div>
+        <div>
+          <h1>Lucky Draw</h1>
+          <p>Pick your number. Let the draw decide.</p>
+        </div>
+      </div>
+      <div id="walletBadge" class="wallet-badge">MiniPay</div>
+    </header>
+
+    <section class="hero card">
+      <div class="pill">WEEKLY DRAW</div>
+      <h2>Win the Lucky Number</h2>
+      <p class="muted">Choose one number from 000 to 999.</p>
+
+      <div class="prize">
+        <span>Prize</span>
+        <strong id="prizeValue">500 cUSD</strong>
+      </div>
+
+      <div class="countdown">
+        <span>Next draw</span>
+        <strong id="countdown">Loading…</strong>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <h3>Choose your number</h3>
+        <span class="fee">0.083 cUSD</span>
+      </div>
+
+      <div class="number-box" aria-label="Selected number">
+        <span id="digit1">0</span><span id="digit2">0</span><span id="digit3">0</span>
+      </div>
+
+      <div class="keypad" id="keypad">
+        <button data-digit="1">1</button><button data-digit="2">2</button><button data-digit="3">3</button>
+        <button data-digit="4">4</button><button data-digit="5">5</button><button data-digit="6">6</button>
+        <button data-digit="7">7</button><button data-digit="8">8</button><button data-digit="9">9</button>
+        <button class="secondary" id="clearBtn">Clear</button><button data-digit="0">0</button>
+        <button class="secondary" id="randomBtn">Random</button>
+      </div>
+
+      <button id="enterBtn" class="primary">Enter Draw — 0.083 cUSD</button>
+      <p id="status" class="status">Prototype mode: no real funds are moved.</p>
+    </section>
+
+    <section class="card ticket hidden" id="ticketCard">
+      <div class="ticket-head">
+        <h3>Your ticket</h3><span class="verified">✓ Recorded</span>
+      </div>
+      <div class="ticket-number" id="ticketNumber">000</div>
+      <div class="ticket-grid">
+        <div><span>Entry</span><b>0.083 cUSD</b></div>
+        <div><span>Draw</span><b id="ticketDraw">Weekly</b></div>
+        <div><span>Ticket ID</span><b id="ticketId">LD-000000</b></div>
+        <div><span>Wallet</span><b id="ticketWallet">Not connected</b></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <h3>How it works</h3>
+      </div>
+      <ol class="steps">
+        <li>Choose a number from 000–999.</li>
+        <li>Pay the fixed entry fee of 0.083 cUSD.</li>
+        <li>After entries close, verifiable randomness determines the winning number.</li>
+        <li>The result and proof are published for verification.</li>
+      </ol>
+      <div class="notice">
+        <b>Important:</b> this build is a test/prototype. Real-money entry, prize payouts, and the verifiable-randomness smart contract are intentionally not enabled yet.
+      </div>
+    </section>
+
+    <footer>
+      <a href="./terms.html">Terms</a>
+      <a href="./privacy.html">Privacy</a>
+      <span>Lucky Draw is independent of MiniPay.</span>
+    </footer>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
