@@ -1,40 +1,61 @@
-const state = { digits: ["0","0","0"], position: 0, wallet: null };
+// Lucky Draw — MiniPay wallet connection
+const $ = (id) => document.getElementById(id);
 
-const $ = id => document.getElementById(id);
-function renderNumber(){
-  $("digit1").textContent = state.digits[0];
-  $("digit2").textContent = state.digits[1];
-  $("digit3").textContent = state.digits[2];
+const connectBtn = $("connectWallet");
+const walletStatus = $("walletStatus");
+
+function getProvider() {
+  // MiniPay wallet provider
+  if (window.ethereum) return window.ethereum;
+  if (window.provider) return window.provider;
+  return null;
 }
-function setStatus(message, ok=false){
-  $("status").textContent = message;
-  $("status").style.color = ok ? "#16803b" : "#82768f";
-}
 
-document.querySelectorAll("[data-digit]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    if(state.position >= 3) return;
-    state.digits[state.position++] = btn.dataset.digit;
-    renderNumber();
-  });
-});
-$("clearBtn").addEventListener("click", () => {
-  state.digits = ["0","0","0"]; state.position = 0; renderNumber();
-});
-$("randomBtn").addEventListener("click", () => {
-  const n = Math.floor(Math.random()*1000).toString().padStart(3,"0");
-  state.digits = n.split(""); state.position = 3; renderNumber();
-});
+async function connectWallet() {
+  const provider = getProvider();
 
-function shortAddress(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : "Not connected"; }
-
-async function connectMiniPay(){
-  if(!window.ethereum){
-    $("walletBadge").textContent = "Open in MiniPay";
-    setStatus("Wallet provider not detected. Open this app inside MiniPay.");
+  if (!provider) {
+    if (walletStatus) {
+      walletStatus.textContent =
+        "Wallet provider not detected. Please open this app inside MiniPay.";
+    }
     return;
   }
-  try{
+
+  try {
+    const accounts = await provider.request({
+      method: "eth_requestAccounts"
+    });
+
+    if (accounts && accounts.length > 0) {
+      const address = accounts[0];
+
+      if (walletStatus) {
+        walletStatus.textContent =
+          "Wallet connected: " +
+          address.slice(0, 6) +
+          "..." +
+          address.slice(-4);
+      }
+
+      if (connectBtn) {
+        connectBtn.textContent = "Wallet Connected";
+        connectBtn.disabled = true;
+      }
+    }
+  } catch (error) {
+    console.error(error);
+
+    if (walletStatus) {
+      walletStatus.textContent =
+        "Wallet connection was cancelled or failed.";
+    }
+  }
+}
+
+if (connectBtn) {
+  connectBtn.addEventListener("click", connectWallet);
+}  try{
     const accounts = await window.ethereum.request({method:"eth_accounts"});
     if(accounts && accounts[0]){
       state.wallet = accounts[0];
